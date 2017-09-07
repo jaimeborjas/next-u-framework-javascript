@@ -67,9 +67,7 @@ function giveCandyArrays(arrayType, index) {
                        candyCol5, candyCol6, candyCol7]);
 
   if (typeof index === 'number') {
-    var candyRow = $([candyCol1.eq(index), candyCol2.eq(index), candyCol3.eq(index),
-                      candyCol4.eq(index), candyCol5.eq(index), candyCol6.eq(index),
-                      candyCol7.eq(index)]);
+    var candyRow = $([candyCol1.eq(index), candyCol2.eq(index), candyCol3.eq(index),candyCol4.eq(index),candyCol5.eq(index), candyCol6.eq(index),candyCol7.eq(index)]);
   } else {
     index = '';
   }
@@ -85,7 +83,7 @@ function giveCandyArrays(arrayType, index) {
 
 function candyRows(index) {
   var candyRow = giveCandyArrays('rows', index);
-  return candyRow;
+  return candyRow ;
 }
 
 function candyColumns(index) {
@@ -93,7 +91,8 @@ function candyColumns(index) {
   return candyColumn[index];
 }
 
-
+function columnValidation() {
+  for (var j = 0; j < 7; j++) {
 //validar donde se debe eliminar un dulce en columna
     var counter = 0;
     // guardar la posicion del dulce
@@ -142,9 +141,9 @@ function candyColumns(index) {
     if (extraCandyPosition.length > 2) {
       candyPosition = $.merge(candyPosition, extraCandyPosition);
     }
-
+	  if (candyPosition.length <= 2) {
       candyPosition = [];
-    }
+	  }
     candyCount = candyPosition.length;
     if (candyCount >= 3) {
       deleteColumnCandy(candyPosition, candyColumn);
@@ -163,7 +162,7 @@ function deleteColumnCandy(candyPosition, candyColumn) {
 // validar donde se debe eiminar un dulce en fila
 
 function rowValidation() {
-  for (var j = 0; j < 6; j++) {
+  for (var j = 0; j < 7; j++) {
     var counter = 0;
     var candyPosition = [];
     var extraCandyPosition = [];
@@ -241,8 +240,11 @@ function setScore(candyCount) {
 }
 
 function checkBoard() {
+     // if (result) {
     fillBoard();
+    // }
 }
+
 
 function fillBoard() {
   var top = 6;
@@ -255,9 +257,9 @@ function fillBoard() {
       // Gets a random candy type
       var candyType = getRandomInt(1, 5);
       if (i == 0 && candys < 1) {
-        $(this).append('<img src="image/'+candyType+'.png" class="element"></img>');
+        $(this).append('<img src="image/'+candyType+'.png" class="elemento"></img>');
       } else {
-        $(this).find('img:eq(0)').before('<img src="image/'+candyType+'.png" class="element"></img>');
+        $(this).find('img:eq(0)').before('<img src="image/'+candyType+'.png" class="elemento"></img>');
       }
     }
   });
@@ -277,7 +279,7 @@ function setValidations() {
 
 function addCandyEvents() {
   $('img').draggable({
-    containment: '.panel-board',
+    containment: '.panel-tablero',
     droppable: 'img',
     revert: true,
     revertDuration: 500,
@@ -396,21 +398,17 @@ function initGame() {
 
   $('.btn-reinicio').click(function() {
     // Reloads the page when clicked for the second time
-    if ($(this).text() == 'Retry') {
+    if ($(this).text() == 'Reiniciar') {
       location.reload(true);
     }
     checkBoard();
-    $(this).text('Retry');
+    $(this).text('Reiniciar');
     // Starts the timer
     $('#timer').startTimer({
       onComplete: endGame
     })
   });
 }
-
-/* End of game functions */
-
-/* It prepares the game */
 $(function() {
   initGame();
 });
