@@ -162,7 +162,7 @@ function deleteColumnCandy(candyPosition, candyColumn) {
 // validar donde se debe eiminar un dulce en fila
 
 function rowValidation() {
-  for (var j = 0; j < 7; j++) {
+  for (var j = 0; j < 6; j++) {
     var counter = 0;
     var candyPosition = [];
     var extraCandyPosition = [];
