@@ -45,7 +45,7 @@ function getRandomInt(min, max) {
   {
     step: function() {
       $(this).css('color', 'purple')
-      colorBlink('h1.main-title');
+      colorBlink('h1.main-titulo');
     },
     queue: true
   }
