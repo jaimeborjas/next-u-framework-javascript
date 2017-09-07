@@ -317,3 +317,102 @@ function swapCandy(event, candyDrag) {
   var dropSrc = candyDrop.attr('src');
   candyDrag.attr('src', dropSrc);
   candyDrop.attr('src', dragSrc);
+
+
+  setTimeout(function() {
+    checkBoard();
+    // impedir movimientos erroneos
+    if ($('img.delete').length == 0) {
+      candyDrag.attr('src', dragSrc);
+      candyDrop.attr('src', dropSrc);
+    } else {
+      updateMoves();
+    }
+  }, 500);
+
+}
+function checkBoardPromise(result) {
+  if (result) {
+    checkBoard();
+  }
+}
+// actualizar el valos de los movimientos
+function updateMoves() {
+  var actualValue = Number($('#moves-text').text());
+  var result = actualValue += 1;
+  $('#moves-text').text(result);
+}
+
+// Animacion de la eliminacion
+function deletesCandyAnimation() {
+  disableCandyEvents();
+  $('img.delete').effect('pulsate', 1000);
+  $('img.delete').animate({
+    opacity: '0'
+  },{
+    duration: 800
+  }
+  )
+  .animate({
+    opacity: '0'
+  }
+  ,
+  {
+    duration: 1000,
+    complete: function() {
+      deletesCandy()
+        .then(checkBoardPromise)
+        .catch(showPromiseError)
+    },
+    queue: true
+  }
+  )
+}
+
+function showPromiseError(error) {
+  console.log(error);
+}
+function deletesCandy() {
+  return new Promise(function (resolve, reject) {
+    if($('img.delete').remove()) {
+      resolve(true);
+    } else {
+      reject('Candy could not be deleted...');
+    }
+  })
+}
+//terminar
+function endGame() {
+  $('div.panel-tablero, div.time').effect('fold');
+  $('h1.main-titulo').addClass('titulo-over')
+  .text('Gracias por jugar!');
+  $('div.score, div.moves, div.panel-score').width('100%');
+}
+
+// iniciar
+function initGame() {
+
+  colorBlink('h1.main-titulo');
+
+  $('.btn-reinicio').click(function() {
+    // Reloads the page when clicked for the second time
+    if ($(this).text() == 'Retry') {
+      location.reload(true);
+    }
+    checkBoard();
+    $(this).text('Retry');
+    // Starts the timer
+    $('#timer').startTimer({
+      onComplete: endGame
+    })
+  });
+}
+
+/* End of game functions */
+
+/* It prepares the game */
+$(function() {
+  initGame();
+});
+
+
